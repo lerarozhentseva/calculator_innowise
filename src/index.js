@@ -1,14 +1,23 @@
 import {
   createFuncButtons, createOperButtons, createNumberButtons, information
-} from './src/scripts/drawers';
-// eslint-disable-next-line import/no-cycle
+} from './scripts/drawers';
 import {
-  FunctionOperations, plus, minus, mult, divide, percent, plusMinus, sqrt, cbrt, divideOnX,
-} from './src/scripts/functionOperations';
-import './src/styles/index.css';
-import './src/scripts/theme';
-// eslint-disable-next-line import/no-cycle
-import { resultFunc } from './src/scripts/result';
+  FunctionOperations,
+  plus,
+  minus,
+  mult,
+  divide,
+  percent,
+  plusMinus,
+  sqrt,
+  cbrt,
+  divideOnX,
+  rememberValue,
+  clearMemoryValue, addToMemoryValue, subtractFromMemoryValue, rootYfunction, powerYvalue
+} from './scripts/functionOperations';
+import './styles/index.css';
+import './scripts/theme';
+import {resultFunc} from './scripts/result';
 
 // to render app
 createFuncButtons();
@@ -23,7 +32,7 @@ const clearAll = document.querySelector('.clearAll');
 const btnDel = document.querySelector('.del');
 const infoBtn = document.querySelector('.info');
 
-const numbers = Array.from(document.querySelectorAll('.number'));
+export const numbers = Array.from(document.querySelectorAll('.number'));
 
 const btnSqrt = document.querySelector('.sqrt');
 const btnCbrt = document.querySelector('.cbrt');
@@ -63,7 +72,6 @@ infoBtn.addEventListener('click', () => {
   alert(information);
 })
 
-// eslint-disable-next-line array-callback-return
 numbers.map((item) => {
   item.addEventListener('click', (e) => {
     if (input.value === '0') {
@@ -107,7 +115,7 @@ btnDivideOnX.addEventListener('click', () => {
 });
 
 btnPlusMinus.addEventListener('click', () => {
-  plusMinus(Number(input.value));
+  plusMinus(+(input.value));
 });
 
 btnSqr.addEventListener('click', () => {
@@ -127,66 +135,29 @@ btnFact.addEventListener('click', () => {
 });
 
 btnPowerY.addEventListener('click', () => {
-  const powerYvalue = (e) => {
-    const yNumber = e.target.value;
-    input.value = input.value.slice(0, input.value.length - 1) ** yNumber;
-    numbers.forEach((item) => item.removeEventListener('click', powerYvalue));
-  };
+  powerYvalue;
   numbers.forEach((item) => item.addEventListener('click', powerYvalue));
 });
 
 btnRootY.addEventListener('click', () => {
-  const analyzeValue = (e) => {
-    const yNumber = e.target.value;
-    if (yNumber % 2 === 1) {
-      if (+input.value < 0) {
-        input.value = 0 - ((0 - input.value.slice(0, input.value.length - 1)) ** (1 / yNumber));
-      } else {
-        input.value = (input.value.slice(0, input.value.length - 1) ** (1 / yNumber));
-      }
-    } else {
-      input.value = input.value.slice(0, input.value.length - 1) ** (1 / yNumber);
-    }
-    numbers.forEach((item) => item.removeEventListener('click', analyzeValue));
-  };
-  numbers.forEach((item) => item.addEventListener('click', analyzeValue));
+  rootYfunction;
+  numbers.forEach((item) => item.addEventListener('click', rootYfunction));
 });
 
-let isOperation;
-const LS_KEY = 'memory';
-const memoryError = 'there are no values in memory';
-
 mr.addEventListener('click', () => {
-  if (localStorage.getItem((LS_KEY)) === 'none') {
-    localStorage.setItem(LS_KEY, input.value);
-    if (!isOperation) {
-      input.value = +localStorage.getItem(LS_KEY);
-    } else {
-      input.value += +localStorage.getItem(LS_KEY);
-    }
-  } else {
-    input.value = localStorage.getItem(LS_KEY);
-  }
+  rememberValue();
 });
 
 mc.addEventListener('click', () => {
-  localStorage.setItem(LS_KEY, 'none');
+  clearMemoryValue();
 });
 
 mPlus.addEventListener('click', () => {
-  if (localStorage.getItem((LS_KEY)) === 'none') {
-    input.value = memoryError;
-  } else {
-    input.value = +input.value + +localStorage.getItem(LS_KEY);
-  }
+  addToMemoryValue();
 });
 
 mMinus.addEventListener('click', () => {
-  if (localStorage.getItem((LS_KEY)) === 'none') {
-    input.value = memoryError;
-  } else {
-    input.value = +input.value - +localStorage.getItem(LS_KEY);
-  }
+  subtractFromMemoryValue();
 });
 
 

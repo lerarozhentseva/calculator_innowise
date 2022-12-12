@@ -1,4 +1,4 @@
-import { input } from '../../index';
+import { input } from '../index';
 
 export const resultFunc = () => {
   const arrFromInputValue = input.value.split('');

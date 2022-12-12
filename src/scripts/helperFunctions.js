@@ -1,4 +1,4 @@
-import { input } from '../../index';
+import {input} from '../index';
 
 export const insertOper = (value) => {
   const elementsFromInput = value.split('').reduce((acc, item) => {
@@ -8,7 +8,6 @@ export const insertOper = (value) => {
     return acc;
   }, 0);
   if (elementsFromInput > 1) {
-    // eslint-disable-next-line array-callback-return,consistent-return
     const signs = value.split('').map((item) => {
       if (item !== '.') {
         if (Number.isNaN(+item)) {
@@ -18,9 +17,7 @@ export const insertOper = (value) => {
     }).filter((elem) => elem !== undefined);
 
     const array = value.split(signs[0])
-      // eslint-disable-next-line array-callback-return,consistent-return
       .map((item) => {
-        // eslint-disable-next-line no-param-reassign
         item = String(parseFloat(item));
         if (!Number.isNaN(+item)) {
           return item;

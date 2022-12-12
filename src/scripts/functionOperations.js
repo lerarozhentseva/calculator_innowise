@@ -1,5 +1,5 @@
 import { insertOper } from './helperFunctions';
-import { input } from '../../index';
+import { input, numbers } from '../index';
 
 export class FunctionOperations {
   constructor() {
@@ -102,4 +102,62 @@ export const cbrt = () => {
   } else {
     input.value = value;
   }
+};
+
+let isOperation;
+const LS_KEY = 'memory';
+const memoryError = 'there are no values in memory';
+
+
+export const rememberValue = () => {
+  if (localStorage.getItem((LS_KEY)) === 'none') {
+    localStorage.setItem(LS_KEY, input.value);
+    if (!isOperation) {
+      input.value = +localStorage.getItem(LS_KEY);
+    } else {
+      input.value += +localStorage.getItem(LS_KEY);
+    }
+  } else {
+    input.value = localStorage.getItem(LS_KEY);
+  }
+};
+
+export const clearMemoryValue = () => {
+  localStorage.setItem(LS_KEY, 'none');
+};
+
+export const addToMemoryValue = () => {
+  if (localStorage.getItem((LS_KEY)) === 'none') {
+    input.value = memoryError;
+  } else {
+    input.value = +input.value + +localStorage.getItem(LS_KEY);
+  }
+};
+
+export const subtractFromMemoryValue = () => {
+  if (localStorage.getItem((LS_KEY)) === 'none') {
+    input.value = memoryError;
+  } else {
+    input.value = +input.value - +localStorage.getItem(LS_KEY);
+  }
+}
+
+export const rootYfunction = (e) => {
+  const yNumber = e.target.value;
+  if (yNumber % 2 === 1) {
+    if (+input.value < 0) {
+      input.value = 0 - ((0 - input.value.slice(0, input.value.length - 1)) ** (1 / yNumber));
+    } else {
+      input.value = (input.value.slice(0, input.value.length - 1) ** (1 / yNumber));
+    }
+  } else {
+    input.value = input.value.slice(0, input.value.length - 1) ** (1 / yNumber);
+  }
+  numbers.forEach((item) => item.removeEventListener('click', rootYfunction));
+};
+
+export const powerYvalue = (e) => {
+  const yNumber = e.target.value;
+  input.value = input.value.slice(0, input.value.length - 1) ** yNumber;
+  numbers.forEach((item) => item.removeEventListener('click', powerYvalue));
 };
